@@ -18,5 +18,8 @@
     <ClCompile Include="PacketObfus.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Handler.ixx">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
