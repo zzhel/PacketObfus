@@ -44,5 +44,6 @@ export ScrambleGuidArray Packet::ScrambleGuid(uint64_t& p_Guid)
         l_ScrambledGuid |= std::move(l_AdvancedByte);
     }
 
+    p_Guid = l_ScrambledGuid;
     return l_Bytes;
 }
