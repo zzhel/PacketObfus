@@ -15,13 +15,18 @@ using ScrambleGuidArray = std::array<uint8_t, 8>;
 export class Packet
 {
 public:
-    Packet() { }
+    Packet(uint64_t p_ObjGuid)
+    {
+        m_ObjGuid = p_ObjGuid;
+    }
 
-    ScrambleGuidArray ScrambleGuid(uint64_t& p_Guid);
+    ScrambleGuidArray ScrambleObjectGuid();
+
 private:
+    uint64_t m_ObjGuid;
 };
 
-export ScrambleGuidArray Packet::ScrambleGuid(uint64_t& p_Guid)
+export ScrambleGuidArray Packet::ScrambleObjectGuid()
 {
     uint64_t l_ScrambledGuid = 0;
     ScrambleGuidArray l_Bytes = { 0, 1, 2, 3, 4, 5, 6, 7 };
@@ -35,15 +40,15 @@ export ScrambleGuidArray Packet::ScrambleGuid(uint64_t& p_Guid)
         std::swap(*l_CurrentByte, l_Bytes.at((rand() % (8 - l_Idx)) + l_Idx));
 
         // get sole byte required
-        uint8_t l_ByteSection = p_Guid >> (l_Idx * 8) & 0xFF;
+        uint8_t l_ByteSection = m_ObjGuid >> (l_Idx * 8) & 0xFF;
 
         // shift accordingly however many bits necessary
-        uint64_t l_AdvancedByte = l_ByteSection << (*l_CurrentByte * 8);
+        uint64_t l_AdvancedByte = (uint64_t)l_ByteSection << (*l_CurrentByte * 8);
 
         // append to final guid
         l_ScrambledGuid |= std::move(l_AdvancedByte);
     }
 
-    p_Guid = l_ScrambledGuid;
+    m_ObjGuid = l_ScrambledGuid;
     return l_Bytes;
 }
